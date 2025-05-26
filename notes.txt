@@ -1,0 +1,5 @@
+WebApp Contents 
+ - History sa previous alerts
+ - Once maka detect tag Illegal Activity mu allert ang web app.
+ - Tas sa alert notification kay naa dadto ang Illegal Activity detected, og Picture sa surrounding via cam.
+ - (tentative) naay page dapat na pede ang cam maka host live sa iya surrouding tas dadto sa page ipakita ang live happening sa setting

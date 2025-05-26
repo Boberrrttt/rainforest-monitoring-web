@@ -7,9 +7,8 @@ const Sidebar = () => {
   const path = usePathname();
 
   const links = [
-    { href: "/", icon: "📊", label: "Dashboard" },
-    { href: "/history", icon: "📜", label: "History" },
-    { href: "/alerts", icon: "🔔", label: "Alerts" },
+    // { href: "/", icon: "📜", label: "History" },
+    { href: "/", icon: "🔔", label: "Alerts" },
     { href: "/monitor", icon: "📡", label: "Monitor" },
   ];
 

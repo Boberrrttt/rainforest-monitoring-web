@@ -1,9 +1,9 @@
 'use client'
 
-import DashboardPage from "@/pages/dashboard.page";
+import AlertPage from "@/pages/alert.page";
 
 export default function Home() {
   return (
-    <DashboardPage/>
+    <AlertPage/>
   );
 }
