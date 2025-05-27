@@ -5,10 +5,13 @@ let events: {
     timestamp: number
 }[] = []
 
-export const handler = (req: NextApiRequest, res: NextApiResponse) => {
+export default function handler (req: NextApiRequest, res: NextApiResponse) {
     if(req.method === 'POST') {
         const { type, timestamp } = req.body;
+
+        console.log(req.body);
         
+
         events.push({ type, timestamp })
 
         return res.status(200).json({ message: 'Received' })
