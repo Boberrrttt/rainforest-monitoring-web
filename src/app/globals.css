@@ -5,6 +5,13 @@
   /* --foreground: #171717; */
 }
 
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* optional, to prevent distortion */
+}
+
+
 /* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

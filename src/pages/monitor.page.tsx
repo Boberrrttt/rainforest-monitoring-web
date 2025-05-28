@@ -1,7 +1,13 @@
 'use client'
 
 const MonitorPage = () => {
-    return <iframe src={process.env.NEXT_PUBLIC_CAM_URL} className="flex-1 h-screen"></iframe>
+
+    return (
+        <div>
+            
+            <iframe src={process.env.NEXT_PUBLIC_CAM_URL}></iframe>
+        </div>
+    )
 }
 
 export default MonitorPage

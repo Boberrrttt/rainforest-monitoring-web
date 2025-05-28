@@ -15,7 +15,7 @@ const Sidebar = () => {
   return (
     <div className="w-80 h-screen p-6 bg-[#2C6E49] flex flex-col justify-between">
       <div>
-        <h1 className="font-bold text-3xl text-white mb-4">Rainforest</h1>
+        <h1 className="font-bold text-3xl text-white mb-4">Rainforest Monitoring</h1>
 
         {/* Separator Bar */}
         <div className="w-full h-[2px] bg-white bg-opacity-30 mb-6"></div>

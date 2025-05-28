@@ -1,12 +1,15 @@
 // utils/uploadAlert.ts
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db } from "./firebase";
 
-export const uploadAlert = async (type: string, timestamp: number) => {
+
+export const uploadAlert = async (activity: string, image: string, soundLeveL: number, timestamp: Timestamp) => {
   try {
     const docRef = await addDoc(collection(db, "alerts"), {
-      type,
-      timestamp,
+      activity,
+      image,
+      soundLeveL,
+      timestamp
     });
 
     console.log("Alert added with ID:", docRef.id);
