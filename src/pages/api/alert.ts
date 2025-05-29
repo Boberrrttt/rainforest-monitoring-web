@@ -1,6 +1,7 @@
 import { uploadAlert } from "@/server/firestore.service";
 import { NextApiRequest, NextApiResponse } from "next"
 import ImageKit from 'imagekit';
+import { useAlertStore } from "@/stores/useAlertStore";
 
 const imagekit = new ImageKit({
   publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!,
@@ -9,12 +10,15 @@ const imagekit = new ImageKit({
 });
 
 let events: {
-    message: string
+    message: string,
+    totalAlerts: number
 }[] = []
+
+let alertCount = 0
 
 const handleCaptureAndUpload = async () => {
   try {
-    const response = await fetch("http://192.168.0.46/capture");
+    const response = await fetch(process.env.NEXT_PUBLIC_CAPTURE_URL!);
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
@@ -33,22 +37,28 @@ const handleCaptureAndUpload = async () => {
 };
 
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse) {
-    if(req.method === 'POST') {
-        const { activity, soundLevel, timestamp} = req.body;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { path } = req.query;
 
-        events.push({ 'message': 'Data fetched' })
+  console.log(path);
+  
 
-        const imageUrl = await handleCaptureAndUpload() 
+  if (req.method === 'POST') {
+    alertCount++;
+    events.push({ message: 'Data fetched', totalAlerts: alertCount });
 
-        await uploadAlert(activity, imageUrl!, soundLevel, timestamp )
+    return res.status(200).json({ message: 'Received', totalAlerts: alertCount });
+  }
 
-        return res.status(200).json({ message: 'Received' })
-    }   
-
-    if (req.method === 'GET') {
-        return res.status(200).json(events)
+  if (req.method === 'GET') {
+    if (path === '/') {
+      alertCount = 0;
+      events.push({ message: 'Data reset', totalAlerts: 0 });
+      return res.status(200).json({ message: 'Alert count reset', totalAlerts: alertCount });
+    } else {
+      return res.status(200).json(events); // or return alertCount, depending on your UI
     }
+  }
 
-    return res.status(405).json({ message: 'Method not allowed' })
+  return res.status(405).json({ message: 'Method not allowed' });
 }

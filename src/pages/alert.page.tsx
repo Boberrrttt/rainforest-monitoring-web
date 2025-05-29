@@ -1,38 +1,54 @@
 'use client'
-
+import { db } from "@/server/firebase";
+import { useAlertStore } from "@/stores/useAlertStore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react"
 
 interface alertTypes {
-    alert: string,
-    timestamp: Date
+    name: string,
+    date: Date
 }
 
 const AlertPage = () => {
-    const [alerts, setAlerts] = useState([
-        { name: "Gunshot Detected", timestamp: new Date("2025-05-28T10:00:00Z") },
-        { name: "Chainsaw Detected", timestamp: new Date("2025-05-28T10:05:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-        { name: "No illegal activity", timestamp: new Date("2025-05-28T10:10:00Z") },
-    ]);
+  const path = usePathname()
+    const [alerts, setAlerts] = useState([{
+      name: '',
+      date: new Date()
+    }]);
 
-    // useEffect(() => {
-    //     const fetchTest = async () => {
-    //         fetch('/api/alert', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ message: 'test from browser' })
-    //           }).then(res => res.json()).then(console.log)
-    //     }
-    //     fetchTest()
-    // }, [])
+    const resetAlerts = useAlertStore(state => state.setAlerts)
+
+    useEffect(() => {
+      const fetchAlerts = async () => {
+        try {
+          
+          localStorage.setItem('totalAlerts', '0');
+
+          resetAlerts(0)
+          await fetch(`/api/alert?path=${path}`, {
+            method: 'GET',
+          });
+          const querySnapshot = await getDocs(collection(db, 'alerts'));
+    
+          const newAlerts: alertTypes[] = [];
+    
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            newAlerts.push({
+              name: data.activity || 'Unknown',
+              date: new Date(data.timestamp || Date.now()),
+            });
+          });
+          setAlerts(newAlerts); 
+        } catch (error) {
+          console.error('Error fetching alerts:', error);
+        }
+      };
+      
+      fetchAlerts();
+    }, []);
+    
     
     return (
         <div className="p-8 flex-1 h-screen">
@@ -45,7 +61,7 @@ const AlertPage = () => {
             >
               <div className="text-lg font-medium text-gray-800">{alert.name}</div>
               <div className="text-sm text-gray-500">
-                {alert.timestamp.toLocaleString()}
+                {alert.date.toString()}
               </div>
             </div>
           ))}

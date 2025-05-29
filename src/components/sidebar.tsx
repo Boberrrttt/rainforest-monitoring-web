@@ -2,9 +2,19 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useAlertStore } from "@/stores/useAlertStore";
 
 const Sidebar = () => {
   const path = usePathname();
+  
+  const setAlerts = useAlertStore((state) => state.setAlerts);
+  let alerts = useAlertStore(state => state.newAlerts)
+
+  useEffect(() => {
+    console.log(alerts);
+    
+  }, [alerts])
 
   const links = [
     // { href: "/", icon: "📜", label: "History" },
@@ -32,8 +42,16 @@ const Sidebar = () => {
                   isActive ? "text-[#A3C9A8] font-semibold" : "text-white hover:text-[#A3C9A8]"
                 }`}
               >
-                <span className="mr-3 text-xl">{icon}</span>
+                <span className="relative mr-3 text-xl">
+                  {icon}
+                  {label === "Alerts" && alerts > 0 && (
+                    <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full px-2">
+                      {alerts}
+                    </span>
+                  )}
+                </span>
                 {label}
+
               </Link>
             );
           })}
