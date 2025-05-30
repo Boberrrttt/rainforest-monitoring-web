@@ -39,12 +39,13 @@ const handleCaptureAndUpload = async () => {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { path } = req.query;
-
-  console.log(path);
-  
+  const { activity, soundLevel, timestamp} = req.body;
 
   if (req.method === 'POST') {
     alertCount++;
+
+    const imageUrl = await handleCaptureAndUpload()
+    await uploadAlert(activity, imageUrl!, soundLevel, timestamp )
     events.push({ message: 'Data fetched', totalAlerts: alertCount });
 
     return res.status(200).json({ message: 'Received', totalAlerts: alertCount });
@@ -56,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       events.push({ message: 'Data reset', totalAlerts: 0 });
       return res.status(200).json({ message: 'Alert count reset', totalAlerts: alertCount });
     } else {
-      return res.status(200).json(events); // or return alertCount, depending on your UI
+      return res.status(200).json(events);
     }
   }
 
