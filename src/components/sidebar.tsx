@@ -2,19 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useEffect } from "react";
 import { useAlertStore } from "@/stores/useAlertStore";
 
 const Sidebar = () => {
   const path = usePathname();
   
-  const setAlerts = useAlertStore((state) => state.setAlerts);
   let alerts = useAlertStore(state => state.newAlerts)
-
-  useEffect(() => {
-    console.log(alerts);
-    
-  }, [alerts])
 
   const links = [
     // { href: "/", icon: "📜", label: "History" },
