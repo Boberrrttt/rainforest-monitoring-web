@@ -55,11 +55,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     const imageUrl = await handleCaptureAndUpload()
-    await uploadAlert(activity, imageUrl!, soundLevel, timestamp )
+    await uploadAlert(activity || 'alert', imageUrl!, soundLevel || 1234, timestamp )
     events.push({ message: 'Data fetched', totalAlerts: alertCount });
 
     return res.status(200).json({ message: 'Received', totalAlerts: alertCount });
-  }
+  } 
 
   if (req.method === 'GET') {
     if (path === '/') {

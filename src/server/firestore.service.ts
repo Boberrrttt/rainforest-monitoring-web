@@ -3,12 +3,12 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 
-export const uploadAlert = async (activity: string, image: string, soundLeveL: number, timestamp: string) => {
+export const uploadAlert = async (activity: string, image: string, soundLevel: number, timestamp: string) => {
   try {
     const docRef = await addDoc(collection(db, "alerts"), {
       activity,
       image,
-      soundLeveL,
+      soundLevel,
       date: timestamp
     });
 

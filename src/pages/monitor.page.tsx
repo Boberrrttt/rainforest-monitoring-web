@@ -5,33 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const MonitorPage = () => {
-    // const path = usePathname()
-    // const setAlerts = useAlertStore((state) => state.setAlerts);
-    // let alerts = useAlertStore(state => state.newAlerts)
-    
-    // const handleButton = async () => {
-    //     const response = await fetch(`/api/alert?path=${path}`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             message: 'New alert triggered',
-    //             timestamp: new Date().toISOString(),
-    //         }),
-    //     });
-
-    //     const data = await response.json()
-    //     setAlerts(data.totalAlerts ?? alerts);
-
-    //     localStorage.setItem('totalAlerts', data.totalAlerts || '0')
-    // }
-  
-    // // Load from localStorage on client
-    // useEffect(() => {
-    //   const total = parseInt(localStorage.getItem('totalAlerts') || '0', 10);
-    //   setAlerts(total);
-    // }, [setAlerts]);
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [isAlarm, setIsAlarm] = useState(false)
@@ -40,6 +13,13 @@ const MonitorPage = () => {
         setIsAlarm(!isAlarm)
           
         await fetch(`${process.env.NEXT_PUBLIC_ESP_URL!}${!isAlarm ? 'alert-on' : 'alert-off' }`)
+        // await fetch('http://192.168.0.38:3000/api/alert', {
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         activity: 'alert',
+        //         soundLevel: 1239
+        //     })
+        // })
     }
 
     return (
