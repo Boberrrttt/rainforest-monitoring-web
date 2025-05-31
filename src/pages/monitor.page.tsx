@@ -38,7 +38,7 @@ const MonitorPage = () => {
 
     const handleTriggerAlarm = async () => {
         setIsAlarm(!isAlarm)
-        
+          
         await fetch(`${process.env.NEXT_PUBLIC_ESP_URL!}${!isAlarm ? 'alert-on' : 'alert-off' }`)
     }
 
@@ -50,7 +50,7 @@ const MonitorPage = () => {
             </h2>
 
             <img
-                src={process.env.NEXT_PUBLIC_CAM_URL}
+                src={'http://192.168.0.46:81/stream'}
                 onLoad={() => setIsLoaded(true)}
                 className='rounded-xl w-full shadow-md transition-opacity duration-500 opacity-100'
                 alt="Live feed"
