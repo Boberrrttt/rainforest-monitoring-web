@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     const imageUrl = await handleCaptureAndUpload()
-    await uploadAlert(activity || 'alert', imageUrl!, soundLevel || 1234, timestamp )
+    await uploadAlert(activity, imageUrl || '', soundLevel, timestamp )
     events.push({ message: 'Data fetched', totalAlerts: alertCount });
 
     return res.status(200).json({ message: 'Received', totalAlerts: alertCount });
