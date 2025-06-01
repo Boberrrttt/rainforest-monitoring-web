@@ -1,7 +1,7 @@
 'use client'
 import { db } from "@/server/firebase";
 import { useAlertStore } from "@/stores/useAlertStore";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react"
 
@@ -25,18 +25,23 @@ const AlertPage = () => {
         await fetch(`/api/alert?path=${path}`, {
           method: 'GET',
         });
-
-        const querySnapshot = await getDocs(collection(db, 'alerts'));
+        const alertsRef = collection(db, 'alerts');
+        
+        const alertsQuery = query(alertsRef, orderBy('date', 'desc')); 
+        
+        const querySnapshot = await getDocs(alertsQuery);
         const newAlerts: alertTypes[] = [];
-
+        
+        console.log(querySnapshot.docs);
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           newAlerts.push({
             name: data.activity || 'Unknown',
-            date: new Date(data.timestamp || Date.now()),
+            date: data.date,
             image: data.image || ''
           });
         });
+
 
         setAlerts(newAlerts);
       } catch (error) {
